@@ -1,7 +1,22 @@
 class Deck
   attr_reader :cards
-  SUITS  = ['c', 'h', 's', 'd']
-  VALUES = [2,3,4,5,6,7,8,9,10, 'J', 'Q', 'K', 'A']
+  SUITS  = %w(H D S C)
+  RANKS = %w(A 1 2 3 4 5 6 7 8 9 10 J Q K)
+  VALUES = {
+    'A' => 1,
+    '2' => 2,
+    '3' => 3,
+    '4' => 4,
+    '5' => 5,
+    '6' => 6,
+    '7' => 7,
+    '8' => 8,
+    '9' => 9,
+    'T' => 10,
+    'J' => 10,
+    'Q' => 10,
+    'K' => 10
+  }
 
   def initialize
     @cards = build_deck
@@ -10,21 +25,36 @@ class Deck
   def build_deck
     deck = []
     SUITS.each do |suit|
-      VALUES.each do |value|
-        deck << Card.new(value, suit)
+      RANKS.each do |rank|
+        deck << Card.new(rank, suit)
       end
     end
     deck
   end
 
   def self.shuffle
-    @cards.each do ||
+    @cards.shuffle!
   end
 end
 
+
 class Card
-  def initialize(value, suit)
-    @value = value
+  attr_reader :rank, :suit
+  def initialize(rank, suit)
+    @rank = rank
     @suit = suit
+  end
+end
+
+class Hand
+  def initialize
+    @hand_cards = []
+  end
+end
+
+class Game
+  attr_reader :game_deck
+  def initialize
+    @game_deck = Deck.new
   end
 end
