@@ -47,14 +47,24 @@ class Card
 end
 
 class Hand
+  attr_reader :hand_cards
   def initialize
     @hand_cards = []
+  end
+
+  def deal_from(deck)
+    @hand_cards << deck.cards.pop
   end
 end
 
 class Game
-  attr_reader :game_deck
+  attr_reader :game_deck, :player_hand, :dealer_hand
   def initialize
     @game_deck = Deck.new
+    @player_hand = Hand.new
+    @dealer_hand = Hand.new
+    2.times{@player_hand.deal_from game_deck}
+    2.times{@dealer_hand.deal_from game_deck}
   end
 end
+
