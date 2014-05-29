@@ -32,10 +32,10 @@ class Deck
     deck
   end
 
-  def self.shuffle
-    @cards.shuffle!
-  end
-end
+#   def self.shuffle
+#     @cards.shuffle!
+#   end
+# end
 
 
 class Card
@@ -61,10 +61,10 @@ class Game
   attr_reader :game_deck, :player_hand, :dealer_hand
   def initialize
     @game_deck = Deck.new
+    @game_deck.cards.shuffle!
     @player_hand = Hand.new
     @dealer_hand = Hand.new
     2.times{@player_hand.deal_from game_deck}
     2.times{@dealer_hand.deal_from game_deck}
   end
 end
-
