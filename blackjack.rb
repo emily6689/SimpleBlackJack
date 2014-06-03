@@ -52,13 +52,20 @@ class Hand
     @hand_cards << deck.cards.pop
   end
 
-  def determine_value
+  def get_value
     value = 0
     self.hand_cards.each do |card|
       value += Deck::VALUES[card.rank].to_i
-      # binding.pry
     end
     value
+  end
+
+  def show_hand
+    cards = ""
+    self.hand_cards.each do |card|
+      cards << "#{card.rank}#{card.suit}, "
+    end
+    cards
   end
 end
 
@@ -80,6 +87,7 @@ class Game
   end
 
   def player_turn
+    puts player_hand.show_hand
     decision = player_prompt
     if decision == "hit"
       player_hand.deal_from game_deck
@@ -92,7 +100,25 @@ class Game
     end
   end
 
-
   def dealer_turn
+    if dealer_hand.get_value < 17
+      dealer_hand.deal_from game_deck
+      dealer_turn
+    end
+  end
+
+  def play_blackjack
+    player_turn
+    dealer_turn
+    if player_hand.get_value > dealer_hand.get_value
+      puts "You win!"
+    elsif player_hand.get_value < dealer_hand.get_value
+      puts "You lose!"
+    else
+      puts "TIE."
+    end
   end
 end
+
+new_game = Game.new
+new_game.play_blackjack
