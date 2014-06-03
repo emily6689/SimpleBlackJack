@@ -1,3 +1,4 @@
+require 'pry'
 class Deck
   attr_reader :cards
   SUITS  = %w(H D S C)
@@ -12,7 +13,7 @@ class Deck
     '7' => 7,
     '8' => 8,
     '9' => 9,
-    'T' => 10,
+    '10' => 10,
     'J' => 10,
     'Q' => 10,
     'K' => 10
@@ -31,12 +32,7 @@ class Deck
     end
     deck
   end
-
-#   def self.shuffle
-#     @cards.shuffle!
-#   end
-# end
-
+end
 
 class Card
   attr_reader :rank, :suit
@@ -55,16 +51,48 @@ class Hand
   def deal_from(deck)
     @hand_cards << deck.cards.pop
   end
+
+  def determine_value
+    value = 0
+    self.hand_cards.each do |card|
+      value += Deck::VALUES[card.rank].to_i
+      # binding.pry
+    end
+    value
+  end
 end
 
 class Game
   attr_reader :game_deck, :player_hand, :dealer_hand
+
   def initialize
     @game_deck = Deck.new
-    @game_deck.cards.shuffle!
     @player_hand = Hand.new
     @dealer_hand = Hand.new
+    @game_deck.cards.shuffle!
     2.times{@player_hand.deal_from game_deck}
     2.times{@dealer_hand.deal_from game_deck}
+  end
+
+  def player_prompt
+    print "Stand or hit?"
+    decision = gets.chomp
+  end
+
+  def player_turn
+    decision = player_prompt
+    if decision == "hit"
+      player_hand.deal_from game_deck
+      player_turn
+    elsif decision == "stand"
+      player_hand
+    else
+      puts 'Please enter "hit" or "stand"'
+      player_turn
+    end
+  end
+
+
+  def dealer_turn
   end
 end
