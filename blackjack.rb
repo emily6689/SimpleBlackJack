@@ -63,7 +63,7 @@ class Hand
   def show_hand
     cards = ""
     self.hand_cards.each do |card|
-      cards << "#{card.rank}#{card.suit}, "
+      cards << "#{card.rank}#{card.suit}"
     end
     cards
   end
@@ -82,12 +82,24 @@ class Game
   end
 
   def player_prompt
-    print "Stand or hit?"
+    print "Stand or hit? "
     decision = gets.chomp
   end
 
+  def show_stats
+    print "--- Dealer Hand: "
+    puts dealer_hand.show_hand + " ---"
+    print "--- Value: "
+    puts "#{dealer_hand.get_value} ---"
+    print "--- Your Hand: "
+    puts player_hand.show_hand + " ---"
+    print "--- Value: "
+    puts "#{player_hand.get_value} ---"
+  end
+
+
   def player_turn
-    puts player_hand.show_hand
+    puts show_stats
     decision = player_prompt
     if decision == "hit"
       player_hand.deal_from game_deck
@@ -110,6 +122,7 @@ class Game
   def play_blackjack
     player_turn
     dealer_turn
+    show_stats
     if player_hand.get_value > dealer_hand.get_value
       puts "You win!"
     elsif player_hand.get_value < dealer_hand.get_value
