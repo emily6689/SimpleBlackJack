@@ -138,7 +138,6 @@ class Game
         puts show_stats
         "You win!"
       else
-        binding.pry
         puts show_stats
         if player_hand.get_value > dealer_hand.get_value
           return "You win!"
@@ -154,7 +153,7 @@ end
 
 class GameSeries
   attr_reader :total_money
-  def initalize
+  def initialize
     @total_money = 100
   end
 
@@ -188,7 +187,7 @@ class GameSeries
   end
 
   def needs_name
-    puts total_money
+    puts "You're currently holding #{total_money}"
     bet_and_play
     another_round = player_prompt
     if another_round == "yes"
