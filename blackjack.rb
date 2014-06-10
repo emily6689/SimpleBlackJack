@@ -131,23 +131,25 @@ class Game
   end
 
   def play_blackjack
+    conclusion = ""
     if !player_turn_under_21
-      "You've exceeded 21! You lose :("
+      conclusion = "You've exceeded 21! You lose :("
     else
       if !dealer_turn_under_21
         puts show_stats
-        "You win!"
+        conclusion = "You win!"
       else
         puts show_stats
         if player_hand.get_value > dealer_hand.get_value
-          return "You win!"
+          conclusion =  "You win!"
         elsif player_hand.get_value < dealer_hand.get_value
-          return "You lose!"
+          conclusion = "You lose!"
         else
-          return "TIE."
+          conclusion = "TIE."
         end
       end
     end
+    conclusion
   end
 end
 
@@ -155,10 +157,6 @@ class GameSeries
   attr_reader :total_money
   def initialize
     @total_money = 100
-  end
-
-  def total_money
-    @total_money
   end
 
   def bet
@@ -173,16 +171,16 @@ class GameSeries
 
   def play_new_game
     new_game = Game.new
-    puts new_game.play_blackjack
+    new_game.play_blackjack
   end
 
   def bet_and_play
     player_bet = bet
     game = play_new_game
     if game == "You've exceeded 21! You lose :(" || game == "You lose!"
-      @total_money -= player_bet
+      @total_money -= player_bet.to_i
     elsif game == "You win!"
-      @total_money += player_bet
+      @total_money += player_bet.to_i
     end
   end
 
