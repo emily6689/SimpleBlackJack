@@ -120,7 +120,6 @@ class Game
   end
 
   def dealer_turn_under_21
-    puts show_stats
     if dealer_hand_value > 21
       false
     else
@@ -137,6 +136,7 @@ class Game
       "You've exceeded 21! You lose :("
     else
       if !dealer_turn_under_21
+        puts show_stats
         "You win!"
       else
         puts show_stats
@@ -152,5 +152,44 @@ class Game
   end
 end
 
-new_game = Game.new
-puts new_game.play_blackjack
+class GameSeries
+  def initalize
+    @total_money = 100
+  end
+
+  def bet
+    print "How much are you putting in? "
+    gets.chomp
+  end
+
+  def player_prompt
+    print "Player another round? (yes or no): "
+    gets.chomp
+  end
+
+  def play_new_game
+    new_game = Game.new
+    puts new_game.play_blackjack
+  end
+
+  def bet_and_play
+    player_bet = bet
+    game = play_new_game
+    if game == "You've exceeded 21! You lose :(" || game == "You lose!"
+      @total_money -= player_bet
+    elsif game == "You win!"
+      @total_money += player_bet
+    end
+  end
+
+  def needs_name
+    bet_and_play
+    another_round = player_prompt
+    if another_round == "yes"
+      needs_name
+    end
+  end
+end
+
+hi = GameSeries.new
+hi.needs_name
