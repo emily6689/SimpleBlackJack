@@ -122,13 +122,12 @@ class Game
   def dealer_turn_under_21
     if dealer_hand_value > 21
       false
+    elsif dealer_hand_value < 17
+      dealer_hand.deal_from game_deck
+      dealer_turn_under_21
     else
-      if dealer_hand_value < 17
-        dealer_hand.deal_from game_deck
-        dealer_turn_under_21
-      end
+      true
     end
-    true
   end
 
   def play_blackjack
@@ -139,6 +138,7 @@ class Game
         puts show_stats
         "You win!"
       else
+        binding.pry
         puts show_stats
         if player_hand.get_value > dealer_hand.get_value
           return "You win!"
@@ -153,8 +153,13 @@ class Game
 end
 
 class GameSeries
+  attr_reader :total_money
   def initalize
     @total_money = 100
+  end
+
+  def total_money
+    @total_money
   end
 
   def bet
@@ -183,6 +188,7 @@ class GameSeries
   end
 
   def needs_name
+    puts total_money
     bet_and_play
     another_round = player_prompt
     if another_round == "yes"
