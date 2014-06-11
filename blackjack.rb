@@ -149,6 +149,7 @@ class Game
         end
       end
     end
+    puts conclusion
     conclusion
   end
 end
@@ -176,11 +177,15 @@ class GameSeries
 
   def bet_and_play
     player_bet = bet
-    game = play_new_game
-    if game == "You've exceeded 21! You lose :(" || game == "You lose!"
-      @total_money -= player_bet.to_i
-    elsif game == "You win!"
-      @total_money += player_bet.to_i
+    if player_bet.to_i < @total_money && player_bet.to_i > 0
+      game = play_new_game
+      if game == "You've exceeded 21! You lose :(" || game == "You lose!"
+        @total_money -= player_bet.to_i
+      elsif game == "You win!"
+        @total_money += player_bet.to_i
+      end
+    else
+      puts "Please enter an amount of money within the bounds of your pot."
     end
   end
 
